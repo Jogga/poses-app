@@ -16,6 +16,7 @@ var schema = buildSchema(`
 let poses = [];
 
 const directoryPath = path.join(__dirname, 'public/img');
+console.log(directoryPath);
 fs.readdir(directoryPath, function (err, files) {
   if (err) {
     return console.log('Unable to scan directory: ' + err);
@@ -25,6 +26,7 @@ fs.readdir(directoryPath, function (err, files) {
   });
 });
 
+console.log(poses);
 
 var getPose = function(args) { 
     var id = args.id;
@@ -49,3 +51,24 @@ app.use('/graphql', express_graphql({
 }));
 
 app.listen(4000, () => console.log('Express GraphQL Server Now Running On localhost:4000/graphql'));
+
+// const { GraphQLServer } = require('graphql-yoga')
+
+// const typeDefs = `
+//   type Query {
+//     pose(id: Int): Pose
+//   },
+//   type Pose {
+//     url: String
+//   }
+// `
+
+// const resolvers = {
+//   Query: {
+//     pose: (_, args) => { return{ url: 'alf' }},
+//   },
+// }
+
+// const server = new GraphQLServer({ typeDefs, resolvers })
+
+// server.start(() => console.log(`Server is running at http://localhost:4000`))
