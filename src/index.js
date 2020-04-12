@@ -1,17 +1,22 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
-import App from '../src/components/App'
+import { render } from 'react-dom'
 import { ApolloProvider } from 'react-apollo'
 import ApolloClient from 'apollo-boost'
+import Pose from './components/App/'
+import GlobalStyles from './components/GlobalStyles'
+
 
 const client = new ApolloClient({
-  uri: 'http://localhost:4000',
+  uri: 'http://localhost:4000/',
 })
 
-//Apollo Client
-ReactDOM.render(
-  <ApolloProvider client={client}>
-    <App />
-  </ApolloProvider>,
-  document.getElementById('root'),
-)
+const App = () => (
+  <>
+    <GlobalStyles />
+    <ApolloProvider client={ client }>
+      <Pose />
+    </ApolloProvider>
+  </>
+);
+
+render(<App />, document.getElementById('root'));
