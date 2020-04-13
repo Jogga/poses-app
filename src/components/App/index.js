@@ -1,26 +1,43 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { gql } from 'apollo-boost'
 import { useQuery } from '@apollo/react-hooks'
-import { Image, ImageContainer } from './style'
+import { Image, AppContainer } from './style'
+import Timer from '../Timer'
 
 const POSE = gql`
-  query currentPose {
-    pose {
+  query Pose($index: Int!) {
+    pose(index: $index) {
       url
     }
+    poseCount
   }
 `;
 
 function App() {
-  const { loading, error, data } = useQuery(POSE);
+  const [ pose, setPose ] = useState(0);
+  const [ time, setTime ] = useState(20);
+  const { loading, error, data } = useQuery(POSE, { variables: { index: pose }});
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (pose + 1 < data.poseCount) {
+        setPose(pose + 1);
+      } else {
+        setPose(0);
+      }
+    }, time * 1000);
+    return () => clearTimeout(timer);
+  })
+
 
   if (error) return <p>{ error.message }</p>;
   if (loading) return <p>Loading</p>;
 
   return (
-    <ImageContainer>
+    <AppContainer>
       <Image src={data.pose.url} alt="" />
-    </ImageContainer>
+      <div style={{ position: "absolute", color: "white" }}>Pose: { pose + 1 } / { data.poseCount } - Time remaining: <Timer time={ time } /></div>
+    </AppContainer>
   )
 }
 

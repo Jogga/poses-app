@@ -10,7 +10,8 @@ var schema = buildSchema(`
     url: String
   }
   type Query {
-    pose: Pose
+    pose(index: Int!): Pose
+    poseCount: Int!
   }
 `);
 
@@ -21,19 +22,28 @@ fs.readdir(directoryPath, function (err, files) {
   if (err) {
     return console.log('Unable to scan directory: ' + err);
   } 
-  files.forEach(function (file) {
+  files.forEach(function (file, index) {
     if (file !== '.DS_Store') {
       poses.push({ url: `http://localhost:4000/static/img/${ file }` });
     }
   });
 });
 
-var getPose = function() {
-  return poses[0];
+var getPose = function(i) {
+  if (i.index < poses.length) {
+    return poses[i.index];
+  } else {
+    return poses[0];
+  }
+}
+
+var getPoseCount = function() {
+  return poses.length;
 }
 
 var root = {
   pose: getPose,
+  poseCount: getPoseCount,
 };
 
 var app = express();
