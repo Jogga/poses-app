@@ -27,10 +27,10 @@ function PoseViewer(props) {
 
 
   return(
-    <>
-      <Image src={props.url} alt="" />
-      <Timer time={props.time} />
-    </>
+    <div key={ props.url }>
+      <Image src={ props.url } alt="" />
+      <Timer time={ props.time } />
+    </div>
   )
 }
 
