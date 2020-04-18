@@ -1,77 +1,105 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useReducer } from 'react'
 import { Image } from './style'
 import Timer from '../Timer'
 import PoseControls from '../PoseControls'
 
+function reducer(state, action) {
+  switch (action.type) {
+    case 'pause':
+      return { 
+        timeLeft: state.timeLeft, 
+        pose: state.pose,
+        paused: true,
+      };
+    case 'play':
+      return {
+        timeLeft: state.timeLeft,
+        pose: state.pose,
+        paused: false,
+      };
+    case 'secondPassed':
+      return {
+        timeLeft: state.timeLeft - 1,
+        pose: state.pose,
+        paused: state.paused,
+      };
+    case 'switchPose':
+      return {
+        timeLeft: action.duration,
+        pose: action.pose,
+        paused: state.paused,
+      }
+  }
+}
+
 function PoseViewer(props) {
-  const poses = props.poses;
-  const [pose, setPose] = useState(0);
-  const [paused, setPaused] = useState(false);
-  const [duration, setDuration] = useState(props.duration);
-  let timeLeft = duration;
-  console.log(`render pose ${pose} with duration ${duration} timeleft ${timeLeft}`);
+  const[state, dispatch] = useReducer(
+    reducer, 
+    {
+      timeLeft: props.duration,
+      pose: 0,
+      paused: false,
+    });
 
   useEffect(() => {
-    console.log(`useEffect ${duration}`);
-    if (!paused) {
+    if (state.timeLeft <= 0) {
+      dispatch({ 
+        type: 'switchPose', 
+        pose: iteratePose(state.pose, 1), 
+        duration: props.duration});
+      return;
+    }
+    if (!state.paused) {
       const timeout = setTimeout(() => {
-        next();
-      }, duration * 1000);
+        dispatch({ type: 'secondPassed' });
+      }, 1000);
       return () => {
         clearTimeout(timeout);
       }
     }
   })
 
-  const next = () => {
-    if (pose < poses.length - 1) {
-      setPose(pose + 1);
+  function iteratePose(current, delta) {
+    if(current + delta > props.poses.length - 1) {
+      return 0;
+    } else if (current + delta < 0) {
+      return props.poses.length - 1;
     } else {
-      setPose(0);
+      return current + delta;
     }
-    setDuration(props.duration);
-    console.log('set duration ' + props.duration);
+  }
+
+  const next = () => {
+    dispatch({ 
+      type: 'switchPose', 
+      pose: iteratePose(state.pose, 1), 
+      duration: props.duration});
   }
   const back = () => {
-    if(pose < 1) {
-      setPose(poses.length - 1);
-    } else {
-      setPose(pose - 1);
-    }
-    setDuration(props.duration);
+    dispatch({ 
+      type: 'switchPose', 
+      pose: iteratePose(state.pose, -1), 
+      duration: props.duration});
   }
   
   const pause = () => {
-    setPaused(true);
-    console.log('pause ' + timeLeft);
-    setDuration(timeLeft);
+    dispatch({ type: 'pause' });
   }
   
   const play = () => {
-    setPaused(false);
-    console.log('play ' + timeLeft);
-    setDuration(timeLeft);
+    dispatch({ type: 'play' });
   }
-
-  const tickTock = (time) => {
-    timeLeft = time;
-  }
-
-  console.log('render poseviewer');
 
   return(
     <div>
-      <Image src={ poses[pose].url } alt="" />
+      <Image src={ props.poses[state.pose].url } alt="" />
       <PoseControls 
         onPause={pause} 
         onPlay={play} 
         onNext={next} 
         onBack={back} 
-        paused={paused} />
-      <Timer 
-        duration={duration}
-        onTick={tickTock}
-        paused={paused} />
+        paused={state.paused} />
+      <Timer>{state.timeLeft}</Timer>
     </div>
   )
 }
