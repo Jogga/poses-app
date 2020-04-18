@@ -4,12 +4,12 @@ import { BackButton, NextButton, PlayPauseButton, Container } from './style'
 function PoseControls(props) {
   return(
     <Container>
-      <BackButton onClick={props.onBackClick}>previous</BackButton>
-        {props.playing
-          ? <PlayPauseButton onClick={props.onPauseClick}>pause</PlayPauseButton>
-          : <PlayPauseButton onClick={props.onPlayClick}>play</PlayPauseButton>
+      <BackButton onClick={props.onBack}>previous</BackButton>
+        {props.paused
+          ? <PlayPauseButton onClick={props.onPlay}>play</PlayPauseButton>
+          : <PlayPauseButton onClick={props.onPause}>pause</PlayPauseButton>
         }
-      <NextButton onClick={props.onNextClick}>next</NextButton>
+      <NextButton onClick={props.onNext}>next</NextButton>
     </Container>
   );
 }
