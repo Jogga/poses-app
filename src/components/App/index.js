@@ -24,25 +24,13 @@ const POSES = gql`
 
 function App() {
   const { loading, error, data } = useQuery(POSES);
-  const [mouseMoving, setMouseMoving] = useState(false);
-
-  function setMouseMove(e) {
-    e.preventDefault();
-    if (mouseMoving) return;
-    setMouseMoving(true);
-    let timeout;
-    (() => {
-      clearTimeout(timeout);
-      timeout = setTimeout(() => setMouseMoving(false), 3000);
-    })();
-  }
 
   if (error) return <p>{ error.message }</p>;
   if (loading) return <p>Loading</p>;
 
   return (
-    <AppContainer onMouseMove={e => setMouseMove(e)}>
-      <PoseViewer poses={ data.poses } duration={ 120 * 1000 } displayControls={ mouseMoving } />
+    <AppContainer>
+      <PoseViewer poses={ data.poses } duration={ 120 * 1000 }/>
     </AppContainer>
   )
 }

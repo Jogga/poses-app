@@ -90,20 +90,16 @@ function PoseViewer(props) {
     dispatch({ type: 'play' });
   }
 
-  console.log(props.displayControls);
-
   return(
     <Stage>
+      <Timer time={state.timeLeft} />
       <Image src={ props.poses[state.pose].url } alt="" />
-      <PoseControls 
-        visible={props.displayControls || state.paused}
+      <PoseControls
         onPause={pause} 
         onPlay={play} 
         onNext={next} 
         onBack={back} 
         paused={state.paused} />
-      <Timer 
-        time={state.timeLeft} />
     </Stage>
   )
 }
