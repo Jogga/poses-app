@@ -1,15 +1,19 @@
 import React from 'react'
-import { BackButton, NextButton, PlayPauseButton, Container } from './style'
+import { BackButton, NextButton, PlayPauseButton, Container, Centered } from './style'
+import { ReactComponent as ArrowLeft } from '../Icons/left.svg'
+import { ReactComponent as ArrowRight } from '../Icons/right.svg'
 
 function PoseControls(props) {
   return(
-    <Container>
-      <BackButton onClick={props.onBack}>previous</BackButton>
-        {props.paused
-          ? <PlayPauseButton onClick={props.onPlay}>play</PlayPauseButton>
-          : <PlayPauseButton onClick={props.onPause}>pause</PlayPauseButton>
-        }
-      <NextButton onClick={props.onNext}>next</NextButton>
+    <Container visible={props.visible}>
+      <Centered>
+        <BackButton onClick={props.onBack}><ArrowLeft /></BackButton>
+          {props.paused
+            ? <PlayPauseButton onClick={props.onPlay}>Continue</PlayPauseButton>
+            : <PlayPauseButton onClick={props.onPause}>Pause</PlayPauseButton>
+          }
+        <NextButton onClick={props.onNext}><ArrowRight /></NextButton>
+      </Centered>
     </Container>
   );
 }

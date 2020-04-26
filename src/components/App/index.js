@@ -12,6 +12,7 @@ import PoseViewer from '../PoseViewer'
 //     poseCount
 //   }
 // `;
+// const { loading, error, data } = useQuery(POSE, { variables: { index: pose }});
 
 const POSES = gql`
   query Poses {
@@ -23,15 +24,25 @@ const POSES = gql`
 
 function App() {
   const { loading, error, data } = useQuery(POSES);
-  // const { loading, error, data } = useQuery(POSE, { variables: { index: pose }});
+  const [mouseMoving, setMouseMoving] = useState(false);
+
+  function setMouseMove(e) {
+    e.preventDefault();
+    if (mouseMoving) return;
+    setMouseMoving(true);
+    let timeout;
+    (() => {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => setMouseMoving(false), 3000);
+    })();
+  }
 
   if (error) return <p>{ error.message }</p>;
   if (loading) return <p>Loading</p>;
-  console.log('render app');
 
   return (
-    <AppContainer>
-      <PoseViewer poses={ data.poses } duration={ 120 * 1000 } />
+    <AppContainer onMouseMove={e => setMouseMove(e)}>
+      <PoseViewer poses={ data.poses } duration={ 120 * 1000 } displayControls={ mouseMoving } />
     </AppContainer>
   )
 }
