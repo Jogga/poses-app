@@ -12,6 +12,7 @@ var schema = buildSchema(`
   type Query {
     pose(index: Int!): Pose
     poseCount: Int!
+    poses: [Pose]
   }
 `);
 
@@ -37,6 +38,10 @@ var getPose = function(i) {
   }
 }
 
+var getPoses = function() {
+  return poses;
+}
+
 var getPoseCount = function() {
   return poses.length;
 }
@@ -44,6 +49,7 @@ var getPoseCount = function() {
 var root = {
   pose: getPose,
   poseCount: getPoseCount,
+  poses: getPoses,
 };
 
 var app = express();
