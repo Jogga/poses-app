@@ -28,5 +28,4 @@ export const Container = styled.div`
   top: 50%;
   transform: translateY(-50%);
   display: flex;
-    
 `

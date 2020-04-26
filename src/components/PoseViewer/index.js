@@ -1,5 +1,5 @@
 import React, { useEffect, useReducer } from 'react'
-import { Image } from './style'
+import { Image, Stage } from './style'
 import Timer from '../Timer'
 import PoseControls from '../PoseControls'
 
@@ -19,7 +19,7 @@ function reducer(state, action) {
       };
     case 'secondPassed':
       return {
-        timeLeft: state.timeLeft - 1,
+        timeLeft: state.timeLeft - 1000,
         pose: state.pose,
         paused: state.paused,
       };
@@ -91,7 +91,7 @@ function PoseViewer(props) {
   }
 
   return(
-    <div>
+    <Stage>
       <Image src={ props.poses[state.pose].url } alt="" />
       <PoseControls 
         onPause={pause} 
@@ -99,8 +99,8 @@ function PoseViewer(props) {
         onNext={next} 
         onBack={back} 
         paused={state.paused} />
-      <Timer>{state.timeLeft}</Timer>
-    </div>
+      <Timer time={state.timeLeft} />
+    </Stage>
   )
 }
 

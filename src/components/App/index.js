@@ -27,12 +27,11 @@ function App() {
 
   if (error) return <p>{ error.message }</p>;
   if (loading) return <p>Loading</p>;
-
   console.log('render app');
 
   return (
     <AppContainer>
-      <PoseViewer poses={ data.poses } duration={ 10 } />
+      <PoseViewer poses={ data.poses } duration={ 120 * 1000 } />
     </AppContainer>
   )
 }
