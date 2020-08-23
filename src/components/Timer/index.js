@@ -9,7 +9,6 @@ function Timer({ time, duration }) {
   const minutesDigits = initial.minutes > 0 || hoursDigits;
   const secondsDigits = true;
 
-  console.log(hoursDigits+' '+minutesDigits+' '+secondsDigits);
   return(
     <StyledTimer>
       {hoursDigits &&
