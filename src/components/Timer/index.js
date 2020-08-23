@@ -1,47 +1,58 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { StyledTimer, Colon } from './style'
 
-function Timer({ time }) {
+function Timer({ time, duration }) {
+  const initial = breakdownTimeString(duration);
+  const current = breakdownTimeString(time);
 
-  const hours = alf(time, 3600000); //timeInSeconds - (timeInSeconds % 3600) / 3600;
-  const minutes = alf(time - hours * 3600000, 60000);
-  const seconds = alf(time - hours * 3600000 - minutes * 60000, 1000);
+  const hoursDigits = initial.hours > 0;
+  const minutesDigits = initial.minutes > 0 || hoursDigits;
+  const secondsDigits = true;
+
+  console.log(hoursDigits+' '+minutesDigits+' '+secondsDigits);
   return(
     <StyledTimer>
-      {hours > 0 &&
+      {hoursDigits &&
         <>
-          <span>
-            {hours > 9
-              ? hours
-              : '0'+hours
-            }
-          </span>
+          <span>{makeUnitDigits(current.hours)}</span>
           <Colon>:</Colon>
         </>
       }
-      {minutes > 0 &&
+      {minutesDigits &&
         <>
-          <span>
-            {minutes > 9
-              ? minutes
-              : '0'+minutes
-            }
-          </span>
+          <span>{makeUnitDigits(current.minutes)}</span>
           <Colon>:</Colon>
         </>
       }
-      <span>
-        {seconds > 9
-          ? seconds
-          : '0'+seconds
-        }
-      </span>
+      {secondsDigits &&
+        <>
+          <span>{makeUnitDigits(current.seconds)}</span>
+        </>
+      }
     </StyledTimer>
   );
 }
 
 export default Timer;
 
-function alf(time, division) {
+function removeIncompleteUnits(time, division) {
   return (time - (time % division)) / division;
+}
+
+function breakdownTimeString(time) {
+  let durationObject = {};
+  durationObject.hours = removeIncompleteUnits(time, 3600000);
+  durationObject.minutes = removeIncompleteUnits(time - durationObject.hours * 3600000, 60000);
+  durationObject.seconds = removeIncompleteUnits(time - durationObject.hours * 3600000 - durationObject.minutes * 60000, 1000);
+  return durationObject;
+}
+
+function makeUnitDigits(n) {
+  if(n > 9) {
+    return n;
+  } else if (n > 0) {
+    return '0' + n;
+  } else {
+    return '00';
+  }
 }

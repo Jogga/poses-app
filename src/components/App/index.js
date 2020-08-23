@@ -30,7 +30,7 @@ function App() {
 
   return (
     <AppContainer>
-      <PoseViewer poses={ data.poses } duration={ 120 * 1000 }/>
+      <PoseViewer poses={ data.poses } duration={ 61 * 1000 }/>
     </AppContainer>
   )
 }
