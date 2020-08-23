@@ -16,6 +16,10 @@ function PoseControls(props) {
       timeout = setTimeout(() => setMouseMoving(false), 1500);
     })();
   }
+  // TODO: On clicking continue, the controls should immediately fade out
+  // Ideally there is a short timer after "continue" so the controls reappear after minimal
+  // Mouse movements.
+  // Also, Move visibility on hover from style.js to this file
   return(
     <Container onMouseMove={e => setMouseMove(e)}>
       <Center>

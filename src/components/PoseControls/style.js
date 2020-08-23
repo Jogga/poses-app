@@ -5,8 +5,8 @@ export const BasePoseButton = css`
   background-color: rgba(255, 255, 255, 0.9);
   border-radius: 50px;
   color: black;
-  padding: 16px 32px;
-  margin: 0 8px;
+  padding: 24px 24px;
+  margin: 0 24px;
   cursor: pointer;
   font-size: inherit;
   line-height: 1em;
@@ -18,7 +18,7 @@ export const BasePoseButton = css`
 export const BaseIconButton = css`
   ${ BasePoseButton };
   line-height: 0;
-  padding: 16px;
+  padding: 24px;
 `
 
 export const BackButton = styled.button`
@@ -31,6 +31,8 @@ export const NextButton = styled.button`
 
 export const PlayPauseButton = styled.button`
   ${ BasePoseButton };
+  width: 160px;
+  font-weight: 600;
 `
 
 export const Container = styled.div`
