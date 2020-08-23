@@ -34,24 +34,32 @@ export const PlayPauseButton = styled.button`
 `
 
 export const Container = styled.div`
-  position: absolute;
   width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.1);
+  `
+export const Center = styled.div`
+  position: absolute;
   top: 50%;
-  transform: translateY(-50%);
-  text-align: center;
-  opacity: 0%;
-  transition: opacity 200ms ease-in-out;
+  left: 50%;
+  transform: translateY(-50%) translateX(-50%);
+`
 
+export const Controls = styled.div`
+  transition: opacity 200ms ease-in-out;
+  opacity: 0%;
+  display: inline-flex;
+  margin-left: auto;
+  margin-right: auto;
   ${({ visible }) => visible && `
     opacity: 100%;
   `}
   &:hover {
     opacity: 100%;
   }
-`
-
-export const Centered = styled.div`
-  display: inline-flex;
-  margin-left: auto;
-  margin-right: auto;
 `

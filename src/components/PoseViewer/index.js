@@ -92,7 +92,6 @@ function PoseViewer(props) {
 
   return(
     <Stage>
-      <Timer time={state.timeLeft} duration={props.duration} />
       <Image src={ props.poses[state.pose].url } alt="" />
       <PoseControls
         onPause={pause} 
@@ -100,6 +99,7 @@ function PoseViewer(props) {
         onNext={next} 
         onBack={back} 
         paused={state.paused} />
+        <Timer time={state.timeLeft} duration={props.duration} />
     </Stage>
   )
 }
