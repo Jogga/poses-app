@@ -4,10 +4,12 @@ const { buildSchema } = require('graphql');
 const cors = require('cors')
 const fs = require('fs');
 const path = require('path');
+const imageSize = require('image-size');
 
 var schema = buildSchema(`
   type Pose {
     url: String
+    orientation: String
   }
   type Query {
     pose(index: Int!): Pose
@@ -18,14 +20,20 @@ var schema = buildSchema(`
 
 let poses = [];
 const directoryPath = path.join(__dirname, 'public/img');
-console.log(__dirname + "/public");
 fs.readdir(directoryPath, function (err, files) {
   if (err) {
     return console.log('Unable to scan directory: ' + err);
   } 
   files.forEach(function (file, index) {
     if (file !== '.DS_Store') {
-      poses.push({ url: `http://localhost:4000/static/img/${ file }` });
+      const dimensions = imageSize(directoryPath+`/`+file);
+      const orientation = dimensions.width > dimensions.height ? `landscape` : `portrait`;
+      poses.push(
+        { 
+          url: `http://localhost:4000/static/img/${ file }`,
+          orientation: orientation,
+        }
+      );
     }
   });
 });
